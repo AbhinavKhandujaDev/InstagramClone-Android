@@ -13,6 +13,6 @@
         android:textSize="28sp"
         android:fontFamily="sans-serif-black"
         android:layout_gravity="center"
-        android:textColor="#000"/>
+        android:textColor="#2F363F"/>
 
 </androidx.appcompat.widget.Toolbar>
