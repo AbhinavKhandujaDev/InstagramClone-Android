@@ -7,16 +7,11 @@
     tools:context=".MainActivity"
     android:background="#ffff">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
-
     <FrameLayout
         android:id="@+id/activity_main_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/activity_main_bottom_navigation"
-        android:layout_below="@id/toolbar"/>
+        android:layout_above="@id/activity_main_bottom_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/activity_main_bottom_navigation"
@@ -27,4 +22,5 @@
         android:background="#EAF0F1"
         app:itemIconTint="#535C68"
         app:itemTextColor="#535C68"/>
+
 </RelativeLayout>

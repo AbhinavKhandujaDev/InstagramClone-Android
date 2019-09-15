@@ -2,11 +2,9 @@ package com.example.instagramclone_android;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,8 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    TextView toolbarTitle;
+//    TextView toolbarTitle;
 
     BottomNavigationView bottomNavigationView;
 
@@ -35,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toolbar = findViewById(R.id.toolbar);
-        toolbarTitle = findViewById(R.id.toolbarTitle);
 
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation);
 
@@ -59,13 +53,10 @@ public class MainActivity extends AppCompatActivity {
             //At first only one fragment is loaded to reduce the load of networking calls
             switch (menuItem.getItemId()) {
                 case R.id.nav_home:
-                    toolbarTitle.setText("Home");
                     currentFrag = homeFrag;
                     transaction.show(homeFrag).commit();
                     break;
                 case R.id.nav_search:
-                    toolbarTitle.setText("Search");
-
                     //if fragment is null or not loaded then added to the transaction stack otherwise the previous one hides and the tapped on is shown
                     if (searchFrag == null) {
                         searchFrag = new SearchFragment();
@@ -77,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     transaction.show(searchFrag).commit();
                     break;
                 case R.id.nav_notifications:
-                    toolbarTitle.setText("Notifications");
                     if (notifFrag == null) {
                         notifFrag = new NotificationsFragment();
                         currentFrag = notifFrag;
@@ -88,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     transaction.show(notifFrag).commit();
                     break;
                 case R.id.nav_profile:
-                    toolbarTitle.setText("Profile");
                     if (profileFrag == null) {
                         profileFrag= new ProfileFragment();
                         currentFrag = profileFrag;
@@ -107,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setRootFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        toolbarTitle.setText("Home");
         homeFrag = new HomeFragment();
         currentFrag = homeFrag;
         fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout,homeFrag, "0").commit();

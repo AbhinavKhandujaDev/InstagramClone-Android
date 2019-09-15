@@ -2,13 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#3498DB">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textSize="24dp"
-        android:layout_centerInParent="true"/>
+    <include
+        android:id="@+id/home_toolbar"
+        layout="@layout/toolbar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/home_toolbar"
+        tools:listitem="@layout/post_item"/>
 
 </RelativeLayout>
