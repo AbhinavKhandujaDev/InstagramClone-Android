@@ -1,4 +1,4 @@
-package com.example.instagramclone_android.Fragments;
+package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.instagramclone_android.R;
 
-public class SearchFragment extends Fragment {
-    private static final String TAG = "SearchFragment";
+public class NotificationsFragment extends Fragment {
+    private static final String TAG = "NotificationsFragment";
 
     private TextView toolbarTitle;
 
@@ -22,10 +22,11 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "frag onCreateView");
-        View view = inflater.inflate(R.layout.fragment_search, container,false);
+
+        View view = inflater.inflate(R.layout.fragment_notifications, container,false);
 
         toolbarTitle = view.findViewById(R.id.toolbarTitle);
-        toolbarTitle.setText("Search");
+        toolbarTitle.setText("Notifications");
 
         return view;
     }

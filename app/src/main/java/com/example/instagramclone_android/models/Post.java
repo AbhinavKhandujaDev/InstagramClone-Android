@@ -1,4 +1,4 @@
-package com.example.instagramclone_android.Model;
+package com.example.instagramclone_android.models;
 
 public class Post {
     String caption;

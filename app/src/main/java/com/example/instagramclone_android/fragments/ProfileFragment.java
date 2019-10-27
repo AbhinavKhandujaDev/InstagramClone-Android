@@ -1,4 +1,4 @@
-package com.example.instagramclone_android.Fragments;
+package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,18 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instagramclone_android.Model.User;
+import com.example.instagramclone_android.adapters.ProfileFragmentAdapter;
+import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.Utils.FirebaseRefs;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
@@ -29,14 +30,17 @@ public class ProfileFragment extends Fragment {
     private TextView toolbarTitle;
 
     private RecyclerView profileRecyclerView;
+    private ProfileFragmentAdapter adapter;
 
     private User user;
+
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "frag onCreateView");
-
+        mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_profile, container,false);
 
         toolbarTitle = view.findViewById(R.id.toolbarTitle);
@@ -45,7 +49,8 @@ public class ProfileFragment extends Fragment {
         profileRecyclerView = view.findViewById(R.id.profile_recycler_view);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
         profileRecyclerView.setLayoutManager(linearLayoutManager);
 
         fetchUserData();
@@ -53,18 +58,20 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fetchUserData() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child("P2p6MBEcesYnxEdxBXdxohYHwjv2");
-
-        myRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference myRef = FirebaseRefs.getRefs().getUsersRef();
+        String currentUid = mAuth.getUid();
+        if (currentUid == null) {return;}
+        myRef.child(currentUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = (String) dataSnapshot.child("name").getValue();
                 String profileImageUrl = (String) dataSnapshot.child("profileImageUrl").getValue();
                 String username = (String) dataSnapshot.child("username").getValue();
-                user = new User(name,username,profileImageUrl,"P2p6MBEcesYnxEdxBXdxohYHwjv2");
+                String key = dataSnapshot.getKey();
+                user = new User(key,name,username,profileImageUrl);
 
-                Log.d(TAG, "Value is: " + user.getProfileImageUrl());
+                adapter = new ProfileFragmentAdapter(user);
+                profileRecyclerView.setAdapter(adapter);
             }
 
             @Override

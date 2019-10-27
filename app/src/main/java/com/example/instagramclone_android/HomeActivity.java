@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.instagramclone_android.Fragments.HomeFragment;
-import com.example.instagramclone_android.Fragments.NotificationsFragment;
-import com.example.instagramclone_android.Fragments.ProfileFragment;
-import com.example.instagramclone_android.Fragments.SearchFragment;
+import com.example.instagramclone_android.fragments.HomeFragment;
+import com.example.instagramclone_android.fragments.NotificationsFragment;
+import com.example.instagramclone_android.fragments.ProfileFragment;
+import com.example.instagramclone_android.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
 //    TextView toolbarTitle;
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         bottomNavigationView = findViewById(R.id.activity_main_bottom_navigation);
 

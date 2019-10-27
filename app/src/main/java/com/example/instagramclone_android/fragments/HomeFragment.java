@@ -1,4 +1,4 @@
-package com.example.instagramclone_android.Fragments;
+package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instagramclone_android.Model.Post;
+import com.example.instagramclone_android.adapters.HomeFragmentAdapter;
+import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.R;
 
 public class HomeFragment extends Fragment {
@@ -22,8 +23,9 @@ public class HomeFragment extends Fragment {
     private TextView toolbarTitle;
 
     private RecyclerView feedRecyclerView;
+    private HomeFragmentAdapter feedAdapter;
 
-    private Post[] post = {new Post("Caption",1234567890,"imageUrl",3,"ownerUid", "postId", false)};
+    private Post[] posts;
 
     @Nullable
     @Override
@@ -32,15 +34,26 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container,false);
 
+        feedRecyclerView = view.findViewById(R.id.feed_recycler_view);
         toolbarTitle = view.findViewById(R.id.toolbarTitle);
         toolbarTitle.setText("Home");
 
-        feedRecyclerView = view.findViewById(R.id.feed_recycler_view);
+        setRecyclerView();
+
+        return view;
+    }
+
+    private void setRecyclerView() {
+        feedAdapter = new HomeFragmentAdapter(posts);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         feedRecyclerView.setLayoutManager(linearLayoutManager);
-
-        return view;
+        feedRecyclerView.setAdapter(feedAdapter);
     }
+
+    private void fetchFeed() {
+
+    }
+
 }

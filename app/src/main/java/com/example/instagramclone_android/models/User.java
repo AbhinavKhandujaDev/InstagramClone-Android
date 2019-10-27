@@ -1,4 +1,4 @@
-package com.example.instagramclone_android.Model;
+package com.example.instagramclone_android.models;
 
 public class User {
     private String name;
@@ -7,7 +7,7 @@ public class User {
     private String uid;
     private boolean isFollowed = false;
 
-    public User(String name, String username, String profileImageUrl, String uid) {
+    public User(String uid, String name, String username, String profileImageUrl) {
         this.name = name;
         this.username = username;
         this.profileImageUrl = profileImageUrl;
