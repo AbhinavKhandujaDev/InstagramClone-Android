@@ -1,8 +1,10 @@
 package com.example.instagramclone_android.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +16,10 @@ import com.example.instagramclone_android.view_holders.ProfileHeaderViewHolder;
 public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private User user;
-//    private Post[] post;
+    private Context context;
 
-    public ProfileFragmentAdapter(User user) {
+    public ProfileFragmentAdapter(User user, Context context) {
+        this.context = context;
         this.user = user;
     }
 
@@ -28,7 +31,6 @@ public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_header_view, parent, false);
         viewHolder = new ProfileHeaderViewHolder(view);
-
 //        if(viewType==0) {
 //            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_header_view,parent,false);
 //            viewHolder = new ProfileHeaderViewHolder(view);
@@ -47,7 +49,7 @@ public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ProfileHeaderViewHolder header = (ProfileHeaderViewHolder) holder;
-        header.setView(this.user);
+        header.setView(this.user, this.context);
     }
 
     @Override

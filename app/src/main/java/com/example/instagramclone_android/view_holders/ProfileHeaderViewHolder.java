@@ -1,11 +1,13 @@
 package com.example.instagramclone_android.view_holders;
 
+import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.R;
@@ -29,6 +31,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
     public ProfileHeaderViewHolder(@NonNull View itemView) {
         super(itemView);
+
         profileImageView = itemView.findViewById(R.id.profile_header_view_image);
 
         followersTextView = itemView.findViewById(R.id.profile_header_followers);
@@ -40,7 +43,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
         editPtofileButton = itemView.findViewById(R.id.profile_header_editProfile_button);
     }
 
-    public void setView(User user) {
+    public void setView(User user, Context context) {
         this.usernameTextView.setText(user.getUsername());
         profileImageView.setImage(user.getProfileImageUrl());
 
@@ -48,6 +51,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
         postsTextView.setText(Html.fromHtml(sourceString));
         setFollowersLabel(user);
         setFollowingsLabel(user);
+        configureEditProfBtn(user,context);
     }
 
     private void setFollowersLabel(User user) {
@@ -90,5 +94,12 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
             }
         });
+    }
+
+    private void configureEditProfBtn(User user, Context context) {
+        if (FirebaseRefs.refs.getmAuth().getUid() != user.getUid()) {
+            editPtofileButton.setBackground(ContextCompat.getDrawable(context,R.drawable.active_login_signup_btn));
+
+        }
     }
 }

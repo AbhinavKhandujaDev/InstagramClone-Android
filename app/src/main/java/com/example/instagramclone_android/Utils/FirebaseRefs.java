@@ -1,5 +1,6 @@
 package com.example.instagramclone_android.Utils;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -8,6 +9,8 @@ import com.google.firebase.storage.StorageReference;
 public class FirebaseRefs {
 
     public static FirebaseRefs refs = new FirebaseRefs();
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private DatabaseReference dbref;
     private StorageReference storageRef;
@@ -55,6 +58,10 @@ public class FirebaseRefs {
         this.userMessagesRef = dbref.child("user-messages");
         this.hashtagPostsRef = dbref.child("hashtag-post");
         this.profileImageStorageRef = dbref.child("profile_images");
+    }
+
+    public FirebaseAuth getmAuth() {
+        return mAuth;
     }
 
     public static FirebaseRefs getRefs() {

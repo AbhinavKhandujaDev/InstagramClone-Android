@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.instagramclone_android.Utils.ExtensionFragment;
+import com.example.instagramclone_android.Utils.ProfileHeaderDecoration;
 import com.example.instagramclone_android.adapters.ProfileFragmentAdapter;
 import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.R;
@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends ExtensionFragment {
     private static final String TAG = "ProfileFragment";
 
     private TextView toolbarTitle;
@@ -48,11 +48,12 @@ public class ProfileFragment extends Fragment {
 
         profileRecyclerView = view.findViewById(R.id.profile_recycler_view);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
-        profileRecyclerView.setLayoutManager(linearLayoutManager);
-
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        profileRecyclerView.setLayoutManager(gridLayoutManager);
+        profileRecyclerView.addItemDecoration(new ProfileHeaderDecoration(getContext()));
         fetchUserData();
         return view;
     }
@@ -70,7 +71,7 @@ public class ProfileFragment extends Fragment {
                 String key = dataSnapshot.getKey();
                 user = new User(key,name,username,profileImageUrl);
 
-                adapter = new ProfileFragmentAdapter(user);
+                adapter = new ProfileFragmentAdapter(user, getContext());
                 profileRecyclerView.setAdapter(adapter);
             }
 
