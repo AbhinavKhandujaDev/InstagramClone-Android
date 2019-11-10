@@ -1,7 +1,6 @@
 package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.Utils.ExtensionFragment;
-import com.example.instagramclone_android.Utils.ProfileHeaderDecoration;
 import com.example.instagramclone_android.adapters.ProfileFragmentAdapter;
 import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.R;
@@ -39,7 +37,6 @@ public class ProfileFragment extends ExtensionFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "frag onCreateView");
         mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_profile, container,false);
 
@@ -48,12 +45,16 @@ public class ProfileFragment extends ExtensionFragment {
 
         profileRecyclerView = view.findViewById(R.id.profile_recycler_view);
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return (position == 0) ? 3 : 1;
+            }
+        });
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
         profileRecyclerView.setLayoutManager(gridLayoutManager);
-        profileRecyclerView.addItemDecoration(new ProfileHeaderDecoration(getContext()));
+
         fetchUserData();
         return view;
     }

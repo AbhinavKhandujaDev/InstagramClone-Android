@@ -7,14 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.Utils.CustomImageView;
 
 public class PostsViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView postImageView;
+    CustomImageView postImageView;
 
-    public PostsViewHolder(@NonNull View itemView, ImageView postImageView) {
+    public PostsViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.postImageView = postImageView;
         this.postImageView = itemView.findViewById(R.id.profile_user_posts_imageView);
     }
 

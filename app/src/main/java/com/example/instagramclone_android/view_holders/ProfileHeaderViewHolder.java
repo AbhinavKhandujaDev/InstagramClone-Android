@@ -31,7 +31,6 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
 
     public ProfileHeaderViewHolder(@NonNull View itemView) {
         super(itemView);
-
         profileImageView = itemView.findViewById(R.id.profile_header_view_image);
 
         followersTextView = itemView.findViewById(R.id.profile_header_followers);
@@ -43,7 +42,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
         editPtofileButton = itemView.findViewById(R.id.profile_header_editProfile_button);
     }
 
-    public void setView(User user, Context context) {
+    public void setUserDets(User user, Context context) {
         this.usernameTextView.setText(user.getUsername());
         profileImageView.setImage(user.getProfileImageUrl());
 
@@ -55,7 +54,6 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setFollowersLabel(User user) {
-
         String sourceString = "<b>" + 0 +"</b>" + "<br>Followers";
         followersTextView.setText(Html.fromHtml(sourceString));
 
@@ -97,7 +95,7 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void configureEditProfBtn(User user, Context context) {
-        if (FirebaseRefs.refs.getmAuth().getUid() != user.getUid()) {
+        if (!FirebaseRefs.refs.getmAuth().getUid().equals(user.getUid())) {
             editPtofileButton.setBackground(ContextCompat.getDrawable(context,R.drawable.active_login_signup_btn));
 
         }
