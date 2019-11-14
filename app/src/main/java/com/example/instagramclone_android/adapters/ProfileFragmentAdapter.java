@@ -11,18 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.view_holders.PostsViewHolder;
 import com.example.instagramclone_android.view_holders.ProfileHeaderViewHolder;
+
+import java.util.List;
 
 public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private User user;
     private Context context;
+    private List<Post> posts;
 
-    public ProfileFragmentAdapter(User user, Context context) {
+    public ProfileFragmentAdapter(User user, Context context, List<Post> posts) {
         this.context = context;
         this.user = user;
+        this.posts = posts;
     }
 
     @Override
@@ -37,12 +42,10 @@ public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         RecyclerView.ViewHolder viewHolder;
 
         int layout = viewType == 0 ? R.layout.profile_header_view : R.layout.profile_item;
-//        int layout = R.layout.profile_item;
 
         view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
 
         viewHolder = viewType == 0 ? new ProfileHeaderViewHolder(view) : new PostsViewHolder(view);
-//        viewHolder = new PostsViewHolder(view);
 
         if (viewType > 0) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(parent.getWidth()/3 - 2, parent.getWidth()/3);
@@ -61,12 +64,12 @@ public class ProfileFragmentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return;
         }
 
-        PostsViewHolder postsView = (PostsViewHolder) holder;
-
+        PostsViewHolder postView = (PostsViewHolder) holder;
+        postView.setPostImageView(posts.get(position - 1));
     }
 
     @Override
     public int getItemCount() {
-        return 50;
+        return posts.size() + 1;
     }
 }

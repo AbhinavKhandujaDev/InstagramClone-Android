@@ -1,22 +1,25 @@
 package com.example.instagramclone_android.models;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+
 public class Post {
     String caption;
     long createdAt;
     String imageUrl;
-    int likes;
+    long likes;
     String ownerUid;
     String postId;
     boolean didLike = false;
 
-    public Post(String caption, long createdAt, String imageUrl, int likes, String ownerUid, String postId, boolean didLike) {
-        this.caption = caption;
-        this.createdAt = createdAt;
-        this.imageUrl = imageUrl;
-        this.likes = likes;
-        this.ownerUid = ownerUid;
+    public Post(String postId, DataSnapshot object) {
+        this.caption = (String) object.child("caption").getValue();
+        this.createdAt = (long) object.child("createdAt").getValue();
+        this.imageUrl = (String) object.child("imageUrl").getValue();
+        this.likes = (long) object.child("likes").getValue();
+        this.ownerUid = (String) object.child("uid").getValue();
         this.postId = postId;
-        this.didLike = didLike;
     }
 
     public String getCaption() {
@@ -43,7 +46,7 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public int getLikes() {
+    public long getLikes() {
         return likes;
     }
 

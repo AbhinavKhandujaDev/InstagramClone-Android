@@ -3,9 +3,10 @@
     android:layout_width="100dp"
     android:layout_height="100dp">
 
-    <ImageView
+    <com.example.instagramclone_android.Utils.CustomImageView
         android:id="@+id/profile_item_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
 
 </androidx.cardview.widget.CardView>

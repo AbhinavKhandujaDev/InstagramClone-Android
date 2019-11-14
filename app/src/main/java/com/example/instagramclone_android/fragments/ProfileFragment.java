@@ -1,6 +1,7 @@
 package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instagramclone_android.Utils.ExtensionFragment;
+import com.example.instagramclone_android.Utils.extensions.ExtensionFragment;
 import com.example.instagramclone_android.adapters.ProfileFragmentAdapter;
+import com.example.instagramclone_android.models.Interfaces.FragmentExtensionInterfaces;
+import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.R;
 import com.example.instagramclone_android.Utils.FirebaseRefs;
@@ -22,6 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ProfileFragment extends ExtensionFragment {
     private static final String TAG = "ProfileFragment";
 
@@ -29,10 +37,13 @@ public class ProfileFragment extends ExtensionFragment {
 
     private RecyclerView profileRecyclerView;
     private ProfileFragmentAdapter adapter;
-
-    private User user;
-
     private FirebaseAuth mAuth;
+
+    private String currentKey;
+    private int initialCount = 10;
+    private int furtherPostsCount = 6;
+
+    private List<Post> posts;
 
     @Nullable
     @Override
@@ -56,29 +67,52 @@ public class ProfileFragment extends ExtensionFragment {
         profileRecyclerView.setLayoutManager(gridLayoutManager);
 
         fetchUserData();
+        getPosts(null);
         return view;
     }
 
     private void fetchUserData() {
-        DatabaseReference myRef = FirebaseRefs.getRefs().getUsersRef();
         String currentUid = mAuth.getUid();
         if (currentUid == null) {return;}
-        myRef.child(currentUid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = (String) dataSnapshot.child("name").getValue();
-                String profileImageUrl = (String) dataSnapshot.child("profileImageUrl").getValue();
-                String username = (String) dataSnapshot.child("username").getValue();
-                String key = dataSnapshot.getKey();
-                user = new User(key,name,username,profileImageUrl);
 
-                adapter = new ProfileFragmentAdapter(user, getContext());
+        fetchUser(currentUid, new FragmentExtensionInterfaces() {
+            @Override
+            public void lastPostId(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void postFetched(Post post) {}
+
+            @Override
+            public void userFetch(User user) {
+                adapter = new ProfileFragmentAdapter(user, getContext(), posts);
                 profileRecyclerView.setAdapter(adapter);
             }
+        });
+    }
 
+    private void getPosts(@Nullable String uid) {
+        String currUid = mAuth.getUid();
+        String id = (uid != null) ? uid : currUid;
+        DatabaseReference ref = FirebaseRefs.refs.getUserPostsRef().child(id);
+
+        posts = new ArrayList<>();
+
+        fetchPosts(ref, currentKey, initialCount, furtherPostsCount, new PostIdInterface() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void lastPostId(DataSnapshot dataSnapshot) {
+                currentKey = dataSnapshot.getKey();
+            }
+        }, new PostFetchInterface() {
+            @Override
+            public void postFetched(Post post) {
+                posts.add(post);
+                Collections.sort(posts, new Comparator<Post>() {
+                    @Override
+                    public int compare(Post o1, Post o2) {
+                        return compare(o1,o2);
+                    }
+                });
+                adapter.notifyDataSetChanged();
             }
         });
     }
