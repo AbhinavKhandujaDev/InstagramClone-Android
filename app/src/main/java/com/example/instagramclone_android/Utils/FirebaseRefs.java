@@ -60,6 +60,10 @@ public class FirebaseRefs {
         this.profileImageStorageRef = dbref.child("profile_images");
     }
 
+    public String getUid() {
+        return FirebaseAuth.getInstance().getUid();
+    }
+
     public FirebaseAuth getmAuth() {
         return mAuth;
     }

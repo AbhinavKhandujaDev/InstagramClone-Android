@@ -17,8 +17,6 @@ public class CustomImageView extends AppCompatImageView {
 
     static HashMap<String, Bitmap> imageCache = new HashMap<>();
 
-    private String lastImgUrl;
-
     public CustomImageView(Context context) {
         super(context);
     }
@@ -27,12 +25,9 @@ public class CustomImageView extends AppCompatImageView {
         super(context, attrs);
     }
 
-    public void setImage(String url) {
-
-        lastImgUrl = url;
-
-        if (imageCache.get(lastImgUrl) != null) {
-            Bitmap imb = imageCache.get(lastImgUrl);
+    public void setImage(final String url) {
+        if (imageCache.get(url) != null) {
+            Bitmap imb = imageCache.get(url);
             setImageBitmap(imb);
             return;
         }
@@ -42,6 +37,7 @@ public class CustomImageView extends AppCompatImageView {
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 setImageBitmap(bmp);
+                imageCache.put(url,bmp);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -1,67 +1,42 @@
 package com.example.instagramclone_android.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.models.Post;
+import com.example.instagramclone_android.view_holders.HomeFeedViewHolder;
+
+import java.util.List;
 
 public class HomeFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Post[] post;
+    private List<Post> posts;
 
-    public HomeFragmentAdapter(Post[] post) {
-        this.post = post;
+    public HomeFragmentAdapter(List<Post> posts) {
+        this.posts = posts;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        return new HomeFeedViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        HomeFeedViewHolder homeFeedViewHolder = (HomeFeedViewHolder) holder;
+        homeFeedViewHolder.setData(posts.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
-    }
-
-    class HomeFeedViewHolder extends RecyclerView.ViewHolder {
-
-        private ImageView profileImageView;
-        private TextView  username;
-        private ImageView optionsImage;
-        private ImageView postImage;
-        private ImageView likesImage;
-        private ImageView commentImage;
-        private ImageView chatImage;
-        private TextView  likesCountTextView;
-        private TextView  captionTextView;
-
-        public HomeFeedViewHolder(@NonNull View itemView) {
-            super(itemView);
-            profileImageView = itemView.findViewById(R.id.post_item_profile_image);
-            username = itemView.findViewById(R.id.post_item_username);
-            optionsImage = itemView.findViewById(R.id.post_item_options);
-            postImage = itemView.findViewById(R.id.post_item_post_image);
-            likesImage = itemView.findViewById(R.id.post_item_likes);
-            commentImage = itemView.findViewById(R.id.post_item_comment);
-            chatImage = itemView.findViewById(R.id.post_item_chat);
-            likesCountTextView = itemView.findViewById(R.id.post_item_likes_count);
-            captionTextView = itemView.findViewById(R.id.post_item_caption);
-        }
-
-//        public void setData(Post post) {
-//            this.username.setText(post.get);
-//        }
+        return posts.size();
     }
 }

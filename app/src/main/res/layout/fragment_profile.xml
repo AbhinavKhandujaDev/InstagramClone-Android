@@ -3,21 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#EA7773">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <include
         android:id="@+id/profile_toolbar"
         layout="@layout/toolbar"/>
-
-<!--    <com.example.instagramclone_android.Utils.ProfileHeaderView-->
-<!--        android:id="@+id/profile_header_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:layout_below="@id/profile_toolbar"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/profile_toolbar">-->
-
-<!--    </com.example.instagramclone_android.Utils.ProfileHeaderView>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profile_recycler_view"
