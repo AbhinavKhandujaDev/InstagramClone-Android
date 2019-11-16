@@ -9,14 +9,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.Utils.FirebaseRefs;
 import com.example.instagramclone_android.Utils.extensions.ExtensionFragment;
 import com.example.instagramclone_android.adapters.HomeFragmentAdapter;
+import com.example.instagramclone_android.models.Interfaces.ViewHolderHomeFeedInterface;
 import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.view_holders.HomeFeedViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
@@ -25,7 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HomeFragment extends ExtensionFragment {
+public class HomeFragment extends ExtensionFragment implements ViewHolderHomeFeedInterface {
     private static final String TAG = "HomeFragment";
 
     private TextView toolbarTitle;
@@ -43,6 +46,11 @@ public class HomeFragment extends ExtensionFragment {
     private int initialPostsCount = 5;
     private int furtherPostsCount = 6;
 
+
+    public HomeFragment(@Nullable Post post) {
+        this.post = post;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +67,7 @@ public class HomeFragment extends ExtensionFragment {
 
     private void setRecyclerView() {
         posts = new ArrayList<>();
-        feedAdapter = new HomeFragmentAdapter(posts);
+        feedAdapter = new HomeFragmentAdapter(posts,this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -68,8 +76,9 @@ public class HomeFragment extends ExtensionFragment {
     }
 
     private void fetchFeed() {
-        if (viewSinglePost) {
+        if (post != null) {
             posts.add(post);
+            feedAdapter.notifyDataSetChanged();
             return;
         }
         FirebaseRefs fbref = FirebaseRefs.refs;
@@ -100,4 +109,39 @@ public class HomeFragment extends ExtensionFragment {
         });
     }
 
+    @Override
+    public void handleUsernameTapped(HomeFeedViewHolder holder) {
+        Fragment homeFrag = new HomeFragment(holder.getPost());
+        navigateToFragment(homeFrag);
+    }
+
+    @Override
+    public void handleOptionsTapped(HomeFeedViewHolder holder) {
+
+    }
+
+    @Override
+    public void handleLikeTapped(HomeFeedViewHolder holder) {
+
+    }
+
+    @Override
+    public void handleCommentTapped(HomeFeedViewHolder holder) {
+
+    }
+
+    @Override
+    public void handleConfigureLikeButton(HomeFeedViewHolder holder) {
+
+    }
+
+    @Override
+    public void handleShowLikes(HomeFeedViewHolder holder) {
+
+    }
+
+    @Override
+    public void handleShowMessages(HomeFeedViewHolder holder) {
+
+    }
 }

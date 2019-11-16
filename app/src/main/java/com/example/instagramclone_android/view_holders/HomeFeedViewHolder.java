@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.instagramclone_android.R;
 import com.example.instagramclone_android.Utils.CustomImageView;
 import com.example.instagramclone_android.Utils.FirebaseRefs;
+import com.example.instagramclone_android.models.Interfaces.ViewHolderHomeFeedInterface;
 import com.example.instagramclone_android.models.Post;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +28,12 @@ public class HomeFeedViewHolder extends RecyclerView.ViewHolder {
     private TextView  likesCountTextView;
     private TextView  captionTextView;
 
+    public ViewHolderHomeFeedInterface feedInterface;
+
+    private HomeFeedViewHolder holder = this;
+
+    private Post post;
+
     public HomeFeedViewHolder(@NonNull View itemView) {
         super(itemView);
         profileImageView = itemView.findViewById(R.id.post_item_profile_image);
@@ -38,14 +45,18 @@ public class HomeFeedViewHolder extends RecyclerView.ViewHolder {
         chatImage = itemView.findViewById(R.id.post_item_chat);
         likesCountTextView = itemView.findViewById(R.id.post_item_likes_count);
         captionTextView = itemView.findViewById(R.id.post_item_caption);
+
+        setOnClicks();
     }
 
     public void setData(Post post) {
+        this.post = post;
         postImage.setImage(post.getImageUrl());
         likesCountTextView.setText(post.getLikes() + " likes");
         captionTextView.setText(post.getCaption());
 
         fetchUserInfo(post);
+        feedInterface.handleConfigureLikeButton(holder);
     }
 
     private void fetchUserInfo(Post post) {
@@ -66,6 +77,54 @@ public class HomeFeedViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    private void setOnClicks() {
+        username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleUsernameTapped(holder);
+            }
+        });
+
+        optionsImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleOptionsTapped(holder);
+            }
+        });
+
+        likesImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleLikeTapped(holder);
+            }
+        });
+
+        commentImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleCommentTapped(holder);
+            }
+        });
+
+        likesCountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleShowLikes(holder);
+            }
+        });
+
+        chatImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedInterface.handleShowMessages(holder);
             }
         });
     }

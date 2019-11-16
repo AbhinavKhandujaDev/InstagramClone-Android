@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setRootFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        homeFrag = new HomeFragment();
+        homeFrag = new HomeFragment(null);
         currentFrag = homeFrag;
         fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout,homeFrag, "0").commit();
     }

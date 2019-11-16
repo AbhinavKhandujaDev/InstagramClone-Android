@@ -109,7 +109,12 @@ public class ProfileFragment extends ExtensionFragment {
                 Collections.sort(posts, new Comparator<Post>() {
                     @Override
                     public int compare(Post o1, Post o2) {
-                        return compare(o1,o2);
+                        if (o1.getCreatedAt() > o2.getCreatedAt()) {
+                            return 1;
+                        }else if (o1.getCreatedAt() < o2.getCreatedAt()) {
+                            return -1;
+                        }
+                        return 0;
                     }
                 });
                 adapter.notifyDataSetChanged();

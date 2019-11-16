@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.fragments.HomeFragment;
 import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.view_holders.HomeFeedViewHolder;
 
@@ -18,8 +19,11 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<Post> posts;
 
-    public HomeFragmentAdapter(List<Post> posts) {
+    private HomeFragment parent;
+
+    public HomeFragmentAdapter(List<Post> posts, HomeFragment parent) {
         this.posts = posts;
+        this.parent = parent;
     }
 
     @NonNull
@@ -32,6 +36,7 @@ public class HomeFragmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         HomeFeedViewHolder homeFeedViewHolder = (HomeFeedViewHolder) holder;
+        ((HomeFeedViewHolder) holder).feedInterface = parent;
         homeFeedViewHolder.setData(posts.get(position));
     }
 

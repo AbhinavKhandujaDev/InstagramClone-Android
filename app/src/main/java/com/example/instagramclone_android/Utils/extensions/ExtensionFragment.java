@@ -5,8 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.instagramclone_android.R;
 import com.example.instagramclone_android.Utils.FirebaseRefs;
+import com.example.instagramclone_android.fragments.LoginFragment;
+import com.example.instagramclone_android.fragments.SignUpFragment;
 import com.example.instagramclone_android.models.Interfaces.FragmentExtensionInterfaces;
 import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.models.User;
@@ -29,10 +34,12 @@ public class ExtensionFragment extends Fragment {
         void postFetched(Post post);
     }
 
+    FragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentManager = getFragmentManager();
     }
 
     public void fetchPosts(DatabaseReference databaseReference, @Nullable final String currentKey, int initialCount, int furtherCount, final PostIdInterface postIdInterface, final PostFetchInterface postFetchInterface) {
@@ -123,4 +130,12 @@ public class ExtensionFragment extends Fragment {
             }
         });
     }
+
+    public void navigateToFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(R.id.activity_main_frame_layout, fragment).commit();
+    }
+
 }
