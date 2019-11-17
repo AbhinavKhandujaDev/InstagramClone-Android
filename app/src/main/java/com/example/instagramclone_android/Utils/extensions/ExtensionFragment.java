@@ -131,7 +131,7 @@ public class ExtensionFragment extends Fragment {
         });
     }
 
-    public void navigateToFragment(Fragment fragment) {
+    protected void navigateToFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
         fragmentTransaction.addToBackStack(null);

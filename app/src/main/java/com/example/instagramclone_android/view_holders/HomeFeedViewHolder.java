@@ -34,6 +34,14 @@ public class HomeFeedViewHolder extends RecyclerView.ViewHolder {
 
     private Post post;
 
+    public ImageView getLikesImage() {
+        return likesImage;
+    }
+
+    public TextView getLikesCountTextView() {
+        return likesCountTextView;
+    }
+
     public HomeFeedViewHolder(@NonNull View itemView) {
         super(itemView);
         profileImageView = itemView.findViewById(R.id.post_item_profile_image);

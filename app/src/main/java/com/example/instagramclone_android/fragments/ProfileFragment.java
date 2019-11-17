@@ -45,6 +45,12 @@ public class ProfileFragment extends ExtensionFragment {
 
     private List<Post> posts;
 
+    private User user;
+
+    public ProfileFragment(@Nullable User user) {
+        this.user = user;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,13 +72,18 @@ public class ProfileFragment extends ExtensionFragment {
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
         profileRecyclerView.setLayoutManager(gridLayoutManager);
 
-        fetchUserData();
-        getPosts(null);
+        if (user != null) {
+            fetchUserData(user.getUid());
+            getPosts(user.getUid());
+        }else {
+            fetchUserData(null);
+            getPosts(null);
+        }
         return view;
     }
 
-    private void fetchUserData() {
-        String currentUid = mAuth.getUid();
+    private void fetchUserData(@Nullable String uid) {
+        String currentUid = (uid != null) ? uid : mAuth.getUid();
         if (currentUid == null) {return;}
 
         fetchUser(currentUid, new FragmentExtensionInterfaces() {

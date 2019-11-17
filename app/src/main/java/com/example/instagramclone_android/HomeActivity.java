@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_profile:
                     if (profileFrag == null) {
-                        profileFrag= new ProfileFragment();
+                        profileFrag= new ProfileFragment(null);
                         currentFrag = profileFrag;
                         transaction.add(R.id.activity_main_frame_layout, profileFrag, "3").commit();
                         return true;

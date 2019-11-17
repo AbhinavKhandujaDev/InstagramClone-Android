@@ -22,7 +22,8 @@
             android:id="@+id/profile_header_view_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/cardview_dark_background"/>
+            android:background="@color/cardview_dark_background"
+            android:scaleType="centerCrop"/>
 
     </androidx.cardview.widget.CardView>
 

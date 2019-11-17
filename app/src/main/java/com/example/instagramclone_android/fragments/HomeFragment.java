@@ -1,7 +1,6 @@
 package com.example.instagramclone_android.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.instagramclone_android.Utils.FirebaseRefs;
 import com.example.instagramclone_android.Utils.extensions.ExtensionFragment;
 import com.example.instagramclone_android.adapters.HomeFragmentAdapter;
+import com.example.instagramclone_android.models.Interfaces.FragmentExtensionInterfaces;
 import com.example.instagramclone_android.models.Interfaces.ViewHolderHomeFeedInterface;
 import com.example.instagramclone_android.models.Post;
 import com.example.instagramclone_android.R;
+import com.example.instagramclone_android.models.User;
 import com.example.instagramclone_android.view_holders.HomeFeedViewHolder;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,8 +114,8 @@ public class HomeFragment extends ExtensionFragment implements ViewHolderHomeFee
 
     @Override
     public void handleUsernameTapped(HomeFeedViewHolder holder) {
-        Fragment homeFrag = new HomeFragment(holder.getPost());
-        navigateToFragment(homeFrag);
+        Fragment profileFragment = new ProfileFragment(holder.getPost().getUser());
+        navigateToFragment(profileFragment);
     }
 
     @Override
@@ -121,8 +124,15 @@ public class HomeFragment extends ExtensionFragment implements ViewHolderHomeFee
     }
 
     @Override
-    public void handleLikeTapped(HomeFeedViewHolder holder) {
-
+    public void handleLikeTapped(final HomeFeedViewHolder holder) {
+        final Post post = holder.getPost();
+        post.adjustLikes(!post.isDidLike(), new Post.PostLikes() {
+            @Override
+            public void likesUpdated(long likes) {
+                holder.getLikesImage().setImageResource((post.isDidLike()) ? R.drawable.ic_like : R.drawable.ic_unlike);
+                holder.getLikesCountTextView().setText(likes + " likes");
+            }
+        });
     }
 
     @Override
@@ -131,8 +141,22 @@ public class HomeFragment extends ExtensionFragment implements ViewHolderHomeFee
     }
 
     @Override
-    public void handleConfigureLikeButton(HomeFeedViewHolder holder) {
+    public void handleConfigureLikeButton(final HomeFeedViewHolder holder) {
+        final Post post = holder.getPost();
+        String uid = FirebaseRefs.refs.getUid();
+        FirebaseRefs.refs.getUserLikesRef().child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean ssHasChild = dataSnapshot.hasChild(post.getPostId());
+                post.setDidLike(ssHasChild);
+                holder.getLikesImage().setImageResource(ssHasChild ? R.drawable.ic_like : R.drawable.ic_unlike);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.instagramclone_android.view_holders;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,8 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
     private TextView usernameTextView;
 
     private Button editPtofileButton;
+
+
 
     public ProfileHeaderViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -98,6 +101,28 @@ public class ProfileHeaderViewHolder extends RecyclerView.ViewHolder {
         if (!FirebaseRefs.refs.getmAuth().getUid().equals(user.getUid())) {
             editPtofileButton.setBackground(ContextCompat.getDrawable(context,R.drawable.active_login_signup_btn));
 
+            user.checkIfFollowed(new User.UserFollowInterface() {
+                @Override
+                public void followStatus(boolean isFollowed) {
+                    editPtofileButton.setText(isFollowed ? "Following" : "Follow");
+                    editPtofileButton.setTextColor(Color.WHITE);
+                }
+            });
         }
+    }
+
+    private void setUserStats(User user) {
+        FirebaseRefs refs = FirebaseRefs.refs;
+        refs.getUserFollowerRef().child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
